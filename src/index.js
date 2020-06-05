@@ -22,17 +22,24 @@ class Board extends React.Component {
   render() {
     return (
       <div>
+        Column
+        <br></br>  
+        <div className="column-header">1 2 3</div>
+        <br></br>    
         <div className="board-row">
+          1
           {this.renderSquare(0)}
           {this.renderSquare(1)}
           {this.renderSquare(2)}
         </div>
         <div className="board-row">
+          2
           {this.renderSquare(3)}
           {this.renderSquare(4)}
           {this.renderSquare(5)}
         </div>
         <div className="board-row">
+          3
           {this.renderSquare(6)}
           {this.renderSquare(7)}
           {this.renderSquare(8)}
@@ -53,6 +60,7 @@ class Game extends React.Component {
       }],
       stepNumber: 0,
       xIsNext: true,
+      coordinates: Array(2).fill(null),
     };
   }
 
@@ -96,6 +104,11 @@ class Game extends React.Component {
       </div>
     );
   }
+  getCoordinate(i) {
+    const x = 1;
+    const y = 1;
+
+  }
   handleClick(i) {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
@@ -103,6 +116,7 @@ class Game extends React.Component {
     if (calculateWinner(squares) || squares[i]) {
       return;
     }
+    //here we get i
     squares[i] = this.state.xIsNext ? 'X' : 'O';
     this.setState({
       history: history.concat([{

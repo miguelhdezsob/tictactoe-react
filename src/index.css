@@ -12,6 +12,11 @@ body {
     content: "";
     display: table;
   }
+  .board-row {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+  }
   
   .status {
     margin-bottom: 10px;
@@ -30,6 +35,16 @@ body {
     padding: 0;
     text-align: center;
     width: 34px;
+  }
+  .column-header {
+    float: left;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 0;
+    text-align: center;
+    width: 120px;
+    letter-spacing: 12px;
+    padding-bottom: 3px;
   }
   
   .square:focus {
