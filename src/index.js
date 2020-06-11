@@ -19,6 +19,19 @@ class Board extends React.Component {
       onClick={() => this.props.onClick(i)}
     />);
   }
+  createBoard() {
+    let board = [];
+    for (let i = 0; i < 3; i++) {
+      let rows = [];
+      rows.push(i + 1)
+      for (let j = 0; j < 3; j++) {
+        rows.push(this.renderSquare(j + (3 * i)))
+      }
+      board.push(<div className="board-row">{rows}</div>)
+    }
+    console.log("board:" + board);
+    return board;
+  }
   render() {
     return (
       <div>
@@ -26,24 +39,7 @@ class Board extends React.Component {
         <br></br>
         <div className="column-header">1 2 3</div>
         <br></br>
-        <div className="board-row">
-          1
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          2
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          3
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+        {this.createBoard()}
       </div>
     );
   }
@@ -71,12 +67,10 @@ class Game extends React.Component {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
-    //TODO: Bold the currently selected item in the move list.
-    //Probably need to use stepNumber
     const moves = history.map((step, move) => {
       const coordinates = this.state.coordinates[move];
       let desc = move ?
-        'Go to move #' + move + " coordinates: " + coordinates.coord:
+        'Go to move #' + move + " coordinates: " + coordinates.coord :
         'Go to game start';
       const shouldBold = (move === this.state.stepNumber);
       console.log("MOVE move:" + move + "this.state.stepNumber:" + this.state.stepNumber);
