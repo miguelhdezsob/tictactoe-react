@@ -71,15 +71,18 @@ class Game extends React.Component {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
+    //TODO: Bold the currently selected item in the move list.
+    //Probably need to use stepNumber
     const moves = history.map((step, move) => {
       const coordinates = this.state.coordinates[move];
-      const desc = move ?
+      let desc = move ?
         'Go to move #' + move + " coordinates: " + coordinates.coord:
         'Go to game start';
-      console.log("MOVE move:" + move + "step:" + step);
+      const shouldBold = (move === this.state.stepNumber);
+      console.log("MOVE move:" + move + "this.state.stepNumber:" + this.state.stepNumber);
       return (
         <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
+          <button className={shouldBold ? 'bold-button' : null} onClick={() => this.jumpTo(move)}>{desc}</button>
         </li>
       );
     });
