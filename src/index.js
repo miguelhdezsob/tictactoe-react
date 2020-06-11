@@ -23,9 +23,9 @@ class Board extends React.Component {
     return (
       <div>
         Column
-        <br></br>  
+        <br></br>
         <div className="column-header">1 2 3</div>
-        <br></br>    
+        <br></br>
         <div className="board-row">
           1
           {this.renderSquare(0)}
@@ -60,7 +60,9 @@ class Game extends React.Component {
       }],
       stepNumber: 0,
       xIsNext: true,
-      coordinates: Array(2).fill(null),
+      coordinates: [{
+        coord: Array(2).fill(null),
+      }],
     };
   }
 
@@ -69,11 +71,12 @@ class Game extends React.Component {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
-
     const moves = history.map((step, move) => {
+      const coordinates = this.state.coordinates[move];
       const desc = move ?
-        'Go to move #' + move :
+        'Go to move #' + move + " coordinates: " + coordinates.coord:
         'Go to game start';
+      console.log("MOVE move:" + move + "step:" + step);
       return (
         <li key={move}>
           <button onClick={() => this.jumpTo(move)}>{desc}</button>
@@ -101,22 +104,20 @@ class Game extends React.Component {
           <div>{status}</div>
           <ol>{moves}</ol>
         </div>
+        <div>Moves are displayed in the format (col,row)</div>
       </div>
     );
   }
-  getCoordinate(i) {
-    const x = 1;
-    const y = 1;
-
-  }
   handleClick(i) {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
+    const coordinates = this.state.coordinates.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
     if (calculateWinner(squares) || squares[i]) {
       return;
     }
     //here we get i
+    let coord = getCoordinates(i);
     squares[i] = this.state.xIsNext ? 'X' : 'O';
     this.setState({
       history: history.concat([{
@@ -124,6 +125,9 @@ class Game extends React.Component {
       }]),
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
+      coordinates: coordinates.concat([{
+        coord: coord,
+      }]),
     });
   }
   jumpTo(step) {
@@ -141,6 +145,25 @@ ReactDOM.render(
   <Game />,
   document.getElementById('root')
 );
+
+function getCoordinates(cell) {
+  let x = 0;
+  let y = 0;
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8]
+  ]
+  for (let i = 0; i < lines.length; i++) {
+    let index = lines[i].indexOf(cell);
+    if (index >= 0) {
+      y = i + 1;
+      x = index + 1;
+    }
+  }
+  console.log("MIGUEL2 x:" + x + "y:" + y);
+  return [x, y];
+}
 
 function calculateWinner(squares) {
   const lines = [
