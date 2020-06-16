@@ -59,15 +59,15 @@ class Game extends React.Component {
       coordinates: [{
         coord: Array(2).fill(null),
       }],
+      isReverse: false,
     };
   }
 
   render() {
-
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
-    const moves = history.map((step, move) => {
+    let moves = history.map((step, move) => {
       const coordinates = this.state.coordinates[move];
       let desc = move ?
         'Go to move #' + move + " coordinates: " + coordinates.coord :
@@ -80,7 +80,10 @@ class Game extends React.Component {
         </li>
       );
     });
-
+    console.log("TYPE typeof moves:" + typeof moves);
+    if (this.state.isReverse) {
+      moves = moves.reverse();
+    }
 
     let status;
     if (winner) {
@@ -101,7 +104,9 @@ class Game extends React.Component {
           <div>{status}</div>
           <ol>{moves}</ol>
         </div>
-        <div>Moves are displayed in the format (col,row)</div>
+        <div>Moves are displayed in the format (col,row)
+          <br></br><button onClick={() => this.reverseMoves()}>Reverse Moves</button>
+        </div>
       </div>
     );
   }
@@ -131,6 +136,11 @@ class Game extends React.Component {
     this.setState({
       stepNumber: step,
       xIsNext: (step % 2) === 0,
+    });
+  }
+  reverseMoves() {
+    this.setState({
+      isReverse: !this.state.isReverse,
     });
   }
 
