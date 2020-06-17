@@ -22,7 +22,9 @@ body {
     margin-bottom: 10px;
   }
   
-  .square {
+  .square,
+  .square-highlight
+  {
     background: #fff;
     border: 1px solid #999;
     float: left;
@@ -66,4 +68,8 @@ body {
   .bold-button {
     font-weight: bold;
   }
+  .square-highlight {
+    background: rgb(199, 11, 11);
+  }
+  
   

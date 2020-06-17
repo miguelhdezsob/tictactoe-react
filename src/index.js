@@ -5,7 +5,7 @@ import './index.css';
 
 function Square(props) {
   return (
-    <button className="square"
+    <button className={props.shouldHighlight ? 'square-highlight' : 'square'}
       onClick={props.onClick}>
       {props.value}
     </button>
@@ -14,8 +14,17 @@ function Square(props) {
 
 class Board extends React.Component {
   renderSquare(i) {
+    const winnerSquared = this.props.winnerSquares;
+    const squareValue = this.props.squares[i];
+    let shouldHighlight;
+    if (winnerSquared) {
+      shouldHighlight = (winnerSquared.includes(i))
+    }
+    console.log("MIGUEL winnerSquared:" + winnerSquared + "squareValue:" + squareValue + "shouldHighlight:" + shouldHighlight);
     return (<Square
-      value={this.props.squares[i]}
+      shouldHighlight={shouldHighlight}
+      value={squareValue}
+      winningSquare={winnerSquared}
       onClick={() => this.props.onClick(i)}
     />);
   }
@@ -66,7 +75,11 @@ class Game extends React.Component {
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
-    const winner = calculateWinner(current.squares);
+    const winnerSquares = calculateWinner(current.squares);
+    let winner;
+    if (winnerSquares) {
+      winner = current.squares[winnerSquares[0]];
+    }
     let moves = history.map((step, move) => {
       const coordinates = this.state.coordinates[move];
       let desc = move ?
@@ -81,11 +94,13 @@ class Game extends React.Component {
       );
     });
     console.log("TYPE typeof moves:" + typeof moves);
+    console.log("TYPE typeof winner:" + typeof moves + "winner:" + winner);
     if (this.state.isReverse) {
       moves = moves.reverse();
     }
 
     let status;
+    // TODO MIGUEL: When no one wins, display a message about the result being a draw.
     if (winner) {
       status = 'Winner: ' + winner;
     } else {
@@ -97,6 +112,7 @@ class Game extends React.Component {
         <div className="game-board">
           <Board
             squares={current.squares}
+            winnerSquares={winnerSquares}
             onClick={(i) => this.handleClick(i)}
           />
         </div>
@@ -171,7 +187,6 @@ function getCoordinates(cell) {
   console.log("MIGUEL2 x:" + x + "y:" + y);
   return [x, y];
 }
-
 function calculateWinner(squares) {
   const lines = [
     [0, 1, 2],
@@ -186,7 +201,7 @@ function calculateWinner(squares) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      return lines[i];
     }
   }
   return null;
