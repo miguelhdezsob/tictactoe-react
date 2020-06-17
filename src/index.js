@@ -98,11 +98,13 @@ class Game extends React.Component {
     if (this.state.isReverse) {
       moves = moves.reverse();
     }
-
+    const isDraw = (this.state.stepNumber === 9);
     let status;
     // TODO MIGUEL: When no one wins, display a message about the result being a draw.
     if (winner) {
       status = 'Winner: ' + winner;
+    } else if (isDraw) {
+      status = "Draw"
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     }
