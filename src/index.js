@@ -1,4 +1,4 @@
-//TODO See more challenges for improvements here: https://reactjs.org/tutorial/tutorial.html#setup-for-the-tutorial
+//Tic-tac-toe React tutorial based off https://reactjs.org/tutorial/tutorial.html#setup-for-the-tutorial
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
@@ -20,7 +20,6 @@ class Board extends React.Component {
     if (winnerSquared) {
       shouldHighlight = (winnerSquared.includes(i))
     }
-    console.log("MIGUEL winnerSquared:" + winnerSquared + "squareValue:" + squareValue + "shouldHighlight:" + shouldHighlight);
     return (<Square
       shouldHighlight={shouldHighlight}
       value={squareValue}
@@ -38,7 +37,6 @@ class Board extends React.Component {
       }
       board.push(<div className="board-row">{rows}</div>)
     }
-    console.log("board:" + board);
     return board;
   }
   render() {
@@ -86,21 +84,17 @@ class Game extends React.Component {
         'Go to move #' + move + " coordinates: " + coordinates.coord :
         'Go to game start';
       const shouldBold = (move === this.state.stepNumber);
-      console.log("MOVE move:" + move + "this.state.stepNumber:" + this.state.stepNumber);
       return (
         <li key={move}>
           <button className={shouldBold ? 'bold-button' : null} onClick={() => this.jumpTo(move)}>{desc}</button>
         </li>
       );
     });
-    console.log("TYPE typeof moves:" + typeof moves);
-    console.log("TYPE typeof winner:" + typeof moves + "winner:" + winner);
     if (this.state.isReverse) {
       moves = moves.reverse();
     }
     const isDraw = (this.state.stepNumber === 9);
     let status;
-    // TODO MIGUEL: When no one wins, display a message about the result being a draw.
     if (winner) {
       status = 'Winner: ' + winner;
     } else if (isDraw) {
@@ -186,7 +180,6 @@ function getCoordinates(cell) {
       x = index + 1;
     }
   }
-  console.log("MIGUEL2 x:" + x + "y:" + y);
   return [x, y];
 }
 function calculateWinner(squares) {
